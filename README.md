@@ -17,4 +17,4 @@ ucators, or incident response teams. This ensures that the methodology is not th
 ## Source
 
 - [Markdown - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://github.com/adulau/the-art-of-pivoting/tree/main/book)
-- [PDF - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](/output/tree/main/the-art-of-pivoting.pdf)
+- [PDF - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://github.com/adulau/the-art-of-pivoting/blob/main/output/the-art-of-pivoting.pdf)
