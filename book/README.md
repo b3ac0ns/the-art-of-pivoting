@@ -150,7 +150,7 @@ Pivoting can also be thought of across different points in time: **current**, **
 DNS is a good example of how all three can apply.  
 
 - **Current pivoting** looks at live DNS records. When an analyst resolves a hostname, the returned IP address represents the state of the infrastructure at the exact moment of analysis.  
-- **Historical pivoting** examines how that hostname resolved in the past, using sources such as Passive DNS. This can reveal previous hosting providers, older campaigns, sinkholes, or infrastructure that has since been abandoned.  
+- **Historical pivoting** examines how that hostname resolved in the past, using sources such as [Passive DNS](https://www.circl.lu/services/passive-dns/). This can reveal previous hosting providers, older campaigns, sinkholes, or infrastructure that has since been abandoned.  
 - **Predictive pivoting** appears in more advanced cases. Domain Generation Algorithms (DGAs) can compute future domains based on time or seed values, meaning some malicious domains exist mathematically before they ever appear in DNS. By generating or monitoring these future domains, analysts can pivot forward in time and anticipate infrastructure before it becomes active.
 
 This time-based perspective highlights that pivoting is not limited to a single snapshot. Infrastructure evolves, and useful intelligence emerges when current, historical, and potential future states are analysed together.
