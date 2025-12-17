@@ -1,5 +1,6 @@
 ---
-title: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
+title: "The Art of Pivoting"
+description: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
 author: [Alexandre Dulaunoy]
 date: "2025-06-04"
 keywords: [threat intelligence, cti, techniques, art of pivoting]
@@ -8,9 +9,13 @@ logo-width: "80mm"
 footnotes-pretty: true
 toc-own-page: true
 colorlinks: true
+mainfont: NotoSans
+mainfontfallback:
+  - "NotoColorEmoji:mode=harf"
 header-includes:
   - \usepackage[table]{xcolor}
   - \definecolor{lightgray}{gray}{0.95}
+  - \newcounter{none}
 ---
 
 # The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
@@ -168,27 +173,20 @@ Fuzzy and group-based correlations therefore extend the pivoting process beyond 
 
 ### Analytical Strategies of Pivoting
 
-```mermaid
-flowchart TD
-    subgraph "Analytical Strategies of Pivoting"
-    
-    A((Data Points such as selector, attribute or IoC)) --> B[Current Pivoting]
-    A --> C[Historical Pivoting]
-    A --> D[Predictive Pivoting]
-
-    B --> B1(Live Infrastructure Mapping such as DNS queries, active scanning)
-    B --> B2(Communication Behavior such as querying services, active monitoring)
-    B --> B3(Operational Patterns such as key materials, similar malicious files)
-
-    C --> C1(Past Infrastructure Reuse such as similar network infrastructure, default setup)
-    C --> C2(Historical Public Records such as WHOIS records, TLS key materials or parameters)
-    C --> C3(Historical Records such as leaked credentials, identifier or aliase reuse)
-
-    D --> D1(Recurring TTPs such as a similar pattern or techniques)
-    D --> D2(Predictive Patterns such as domain generation algorithms, common patterns reused) 
-    D --> D3(Forecasting Tool, Techniques or Practice)
-    end
-```
+| Pivot Category | Pivot Type | Description / Examples |
+|---------------|------------|------------------------|
+| Data Points (selector, attribute, IoC) | Current Pivoting | Analysis based on live or near-real-time observations |
+| Current Pivoting | Live Infrastructure Mapping | DNS queries, active scanning |
+| Current Pivoting | Communication Behavior | Querying services, active monitoring |
+| Current Pivoting | Operational Patterns | Key materials, similar malicious files |
+| Data Points (selector, attribute, IoC) | Historical Pivoting | Analysis based on past or archived data |
+| Historical Pivoting | Past Infrastructure Reuse | Similar network infrastructure, default setups |
+| Historical Pivoting | Historical Public Records | WHOIS records, TLS key materials or parameters |
+| Historical Pivoting | Historical Records | Leaked credentials, identifier or alias reuse |
+| Data Points (selector, attribute, IoC) | Predictive Pivoting | Analysis aiming to anticipate future activity |
+| Predictive Pivoting | Recurring TTPs | Similar patterns or techniques reused over time |
+| Predictive Pivoting | Predictive Patterns | Domain generation algorithms, reused naming patterns |
+| Predictive Pivoting | Forecasting Tools / Techniques | Tools, techniques, or practices for forecasting activity |
 
 Pivoting can also be thought of across different points in time: **current**, **historical**, and **predictive**.
 
@@ -275,6 +273,98 @@ The real strength of uncommon data points lies in composite correlation, their a
 
 By expanding our collection to include these unconventional data points, we can achieve deeper insights and better threat discovery.
 
+## Validating Correlation: Signal or Noise?
+
+Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
+
+Validation is not about disproving correlation, but about evaluating its **investigative value**. A correlation can be valid from a data perspective and still be irrelevant, misleading, or too generic to support further analysis. This section explores common correlation patterns that frequently produce noise, along with counter-examples where the same correlations become highly valuable.
+
+### Correlation Cardinality as a First Heuristic
+
+A simple but powerful heuristic is **cardinality**: how many other data points are linked through the same correlation.
+
+- **Low cardinality** correlations often indicate specificity and intentional reuse.
+- **High cardinality** correlations may indicate shared infrastructure, generic services, or artifacts that are not actor-controlled.
+
+Cardinality alone is not sufficient to accept or reject a correlation, but it provides an immediate signal for prioritization and deeper validation.
+
+### IP Address to Hostname Correlation
+
+Correlating IP addresses to hostnames is a foundational technique in infrastructure analysis.
+
+- **Low correlation count** (e.g. one IP hosting one or two related domains) can indicate dedicated infrastructure, staging servers, or early deployment phases of an operation.
+- **High correlation count** (e.g. dozens or hundreds of hostnames resolving to the same IP) often indicates shared hosting, CDN nodes, sinkholes, or multi-tenant cloud services.
+
+However, high-volume IP-to-hostname correlations are not inherently useless.
+
+> :twisted_rightwards_arrows: **Counter-example:** If a high-cardinality IP is associated with a narrow thematic set of domains (similar naming patterns, shared TLS certificates, common web content), it may represent a shared malicious hosting provider or a coordinated campaign using pooled infrastructure. In such cases, the *pattern* of the domains matters more than the number.
+
+### Domain to IP (Reverse) Correlation
+
+The reverse correlation, pivoting from a domain to all IPs it has resolved to historically. can also generate noise.
+
+- A domain resolving to many IPs over time is often explained by CDNs, load balancing, or defensive hosting practices.
+- This makes individual IP correlations weak in isolation.
+
+> :twisted_rightwards_arrows: **Counter-example:** If historical resolution shows brief appearances in small, obscure network ranges before moving to mainstream hosting, those short-lived IPs may reveal early testing infrastructure or transitional deployment stages worth investigating.
+
+### File Hash Correlation (Especially MD5)
+
+Exact hash correlation is usually considered strong, but volume matters.
+
+- A hash that appears across a very large number of unrelated events may indicate a common library, installer stub, or benign component embedded in many binaries. Services like **[hashlookup.io](https://hashlookup.io)**[^hashlookup] allow analysts to quickly determine whether a file hash corresponds to a known, widely distributed software component observed across multiple ecosystems. This helps avoid over-interpreting correlations that are technically correct but operationally irrelevant.
+- MD5 hashes in particular may collide or be reused unintentionally.
+
+> :twisted_rightwards_arrows: **Counter-example:** If a hash appears frequently *but only within a constrained ecosystem* (same malware family, same delivery vector, same campaign timeframe), the repetition strengthens rather than weakens the correlation.
+
+### TLS Certificate Correlation
+
+TLS certificate reuse is often a high-confidence indicator.
+
+- A certificate correlated across a very large number of domains may simply be a default certificate generated by an automated hosting panel or cloud provider.
+- Wildcard or auto-issued certificates can dramatically inflate correlation volume.
+
+> :twisted_rightwards_arrows: **Counter-example:** A certificate reused across low-volume, short-lived domains, especially when paired with other shared artifacts (HTTP headers, favicons, cookie names), can indicate operator-level reuse and poor operational hygiene.
+
+### Filename and Path Correlation
+
+Filenames and URL paths are classic weak indicators.
+
+- Common names like `login.php`, `update.exe`, or `/admin/` correlate extremely widely and usually produce noise.
+- High correlation volume here is almost always uninteresting.
+
+> :twisted_rightwards_arrows:  **Counter-example:** Highly specific or unusual paths, parameter names, or directory structures—especially when reused across multiple infrastructures—can become strong pivots. Uncommon spelling, language-specific terms, or hard-coded developer paths often reveal shared tooling.
+
+### ASN and Hosting Provider Correlation
+
+Correlating on ASN or hosting provider can be misleading.
+
+- Large providers host millions of unrelated customers.
+- High correlation volume usually reflects provider popularity, not coordination.
+
+> :twisted_rightwards_arrows:  **Counter-example:** Repeated use of small, niche providers, short-lived ASNs, or providers known for abuse tolerance can significantly increase the value of this correlation, especially when combined with time-based analysis.
+
+### Time as a Validation Dimension
+
+Time is often underused in correlation validation.
+
+- High-volume correlations spread over years often indicate background noise.
+- Correlations clustered tightly in time may indicate coordinated deployment or campaign activity.
+
+A correlation that is weak spatially but strong temporally can still be highly valuable.
+
+### Analyst Validation: Accept, Refine, or Reject
+
+For each correlation, an analyst should consider three outcomes:
+
+- **Accept**: the correlation is meaningful and supports further pivoting.
+- **Refine**: the correlation is too broad but becomes useful when constrained (by time, context, or additional data points).
+- **Reject**: the correlation is technically correct but analytically irrelevant.
+
+Rejecting a correlation is not failure, it is an essential part of maintaining analytical clarity and avoiding cognitive overload.
+
+Ultimately, effective pivoting depends not on the quantity of correlations, but on the analyst’s ability to evaluate their relevance. Correlation produces possibilities; validation turns them into intelligence.
+
 ## Origin of the Book
 
 This book began life as a presentation at the [2025 FIRST Cyber Threat Intelligence Conference](https://www.first.org/conference/firstcti25/program#pThe-Art-of-Pivoting-How-You-Can-Discover-More-from-Adversaries-with-Existing-Inf) held in Berlin (April 21-23, 2025). From the plenary stage, the theme “The Art of Pivoting” resonated with analysts, threat-intelligence practitioners, and incident-response teams alike: how to discover more from adversaries using existing information. Inspired by the lively exchange of ideas and the collaborative spirit of the conference, the authors decided to expand the talk into a full-length guide.
@@ -284,3 +374,4 @@ While the presentation’s narrative was time-limited, the ambition of this book
 [^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
 [^hhhash]: [HTTP Headers Hashing (HHHash) or improving correlation of crawled content](https://www.foo.be/2023/07/HTTP-Headers-Hashing_HHHash) which facilitates the hashing of similar returned HTTP headers.
+[^hashlookup]: **[hashlookup.io](https://hashlookup.io)** is an open service that aggregates cryptographic hashes observed across a wide range of public software distributions, package repositories, and datasets. It enables analysts to quickly identify hashes that are commonly associated with benign files or shared components, helping to reduce false positives when validating large-scale hash correlations.
