@@ -593,6 +593,74 @@ Because HTTP headers sit at the intersection of application logic, middleware, a
 
 Used alongside dom-hash, favicon hashing, and other uncommon data points, HHHash reinforces a central theme of pivot-based analysis: meaningful relationships are often hidden in plain sight, embedded in technical details that attackers assume are insignificant.
 
+### Cookie Names: Application-Level Fingerprints Beyond Volatile Values
+
+HTTP cookies are traditionally viewed as transient state containers whose values change frequently and are therefore difficult to use for correlation. However, when the focus shifts from **cookie values** to **cookie names**, cookies become a surprisingly stable and low-noise data point for pivoting and infrastructure analysis.
+
+Custom or reused cookie names often reflect application logic, framework defaults, or developer choices. Unlike values, which are typically randomized, time-bound, or user-specific, cookie names are rarely rotated and are commonly reused across deployments. This makes them well suited for correlation.
+
+#### Why Cookie Names Matter
+
+From an operational perspective, cookie names have several properties that make them valuable:
+
+- They are usually hard-coded in application logic.
+- They persist across redeployments and campaigns.
+- They are rarely considered intelligence-relevant by threat actors.
+- They often survive changes in hosting, domains, or certificates.
+
+Threat actors may rotate infrastructure aggressively, but they rarely refactor application-level identifiers such as cookie names unless forced to do so. This operational inertia turns cookie names into durable fingerprints.
+
+#### Cookie Names as Correlation Primitives
+
+Cookie name correlation works by extracting the names of cookies set by a server (e.g. via `Set-Cookie` headers) and treating those names as data points. Correlating on names rather than values avoids most of the noise associated with session identifiers, tokens, or user-specific data. Cookie names can be extracted when crawling websites using standard browser capabilities (as performed in AIL using the [Lacus framework](https://github.com/ail-project/lacus)), and they correspond to the same cookie names that a user would normally see during a regular browsing session. 
+
+Cookie names are particularly effective for:
+
+- Linking phishing sites using the same kit or backend
+- Correlating administrative panels or dashboards or similar software stack
+- Identifying reused web shells or lightweight control interfaces
+- Pivoting between staging, testing, and production deployments
+
+Because cookie names operate at the application layer, they often reveal reuse that is invisible at the network or infrastructure level.
+
+#### Cookie Values: Fragile but Occasionally Useful
+
+While cookie values are generally too volatile for direct correlation, they should not be dismissed entirely. In some cases, values may encode:
+
+- Static identifiers or flags
+- Poorly randomized tokens
+- Environment or campaign markers
+- Developer mistakes or debugging artifacts
+
+However, correlating cookie values safely usually requires additional normalization, decoding, or contextual validation. Without such processing, direct value-based correlation is prone to false positives and analytical noise. For this reason, cookie names should be treated as the primary indicator, with values used selectively and cautiously.
+
+#### Composite Correlation with Cookie Names
+
+Cookie names rarely act alone. Their true value emerges in combination with other uncommon data points:
+
+- Cookie name reuse combined with identical DOM structure
+- Cookie names reinforcing favicon or HHHash correlations
+- Shared cookie naming patterns across Tor and clear-web services
+- Cookie names aligned with similar response headers or paths
+
+In composite correlation, cookie names often function as a reinforcing signal—strengthening hypotheses generated through other pivots.
+
+#### Noise, Defaults, and Interpretation
+
+Not all cookie names are meaningful in the context of an investigation, although some may still be useful for network reconnaissance or for identifying similar software and frameworks in use.
+
+- Common framework defaults (e.g. `PHPSESSID`, `JSESSIONID`) generate high-volume, low-value correlations.
+- Third-party services and analytics may introduce generic cookie names.
+- Security appliances or proxies may inject their own cookies.
+
+High-cardinality cookie name correlations usually indicate generic or framework-level behavior and should be deprioritized. In contrast, **unusual, custom, or semantically specific cookie names**—especially when observed across multiple deployments—are strong candidates for investigation.
+
+#### Positioning Cookie Names Among Uncommon Data Points
+
+Cookie names exemplify a broader class of **application-layer structural indicators**: data points that reflect developer decisions rather than runtime state. Their effectiveness stems from being overlooked, stable, and inexpensive to extract.
+
+When used thoughtfully, cookie name correlation provides a low-effort, high-return pivot that complements other structural techniques such as DOM hashing and HTTP header fingerprinting. They reinforce a central lesson of pivot-based analysis: durable intelligence often resides not in high-entropy values, but in the quiet, persistent details that attackers rarely bother to change.
+
 ## Validating Correlation: Signal or Noise?
 
 Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
