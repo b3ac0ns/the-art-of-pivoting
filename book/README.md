@@ -735,6 +735,72 @@ Filenames occupy a unique position among uncommon data points: they sit at the i
 
 Used thoughtfully, filenames complement structural and behavioral indicators by adding semantic and contextual depth. They reinforce a key principle of pivot-based analysis: even fragile data points can yield meaningful intelligence when interpreted within the right context and combined with other signals.
 
+### Image-Derived Text and Visual Semantics: Turning Images into Correlatable Data Points
+
+Images are often treated as opaque artifacts in threat intelligence: difficult to parse, expensive to analyze, and primarily useful for human interpretation. In practice, however, images frequently contain **structured textual and semantic information** that can be extracted automatically and transformed into actionable data points for correlation and pivoting.
+
+With modern OCR techniques and vision-language models, large-scale image analysis has become both feasible and operationally valuable. When images are treated as data sources rather than static evidence, they unlock an additional layer of intelligence that often escapes traditional collection pipelines.
+
+#### Textual Information Embedded in Images
+
+Many images circulating in threat actor ecosystems contain text that is not available elsewhere. This includes:
+
+- Device or account identifiers
+- Transaction references and order numbers
+- Usernames, aliases, or contact details
+- Embedded messages or operational notes
+- Screenshots of tools, dashboards, or communications
+
+CRNN-based OCR models are particularly effective at extracting such information from screenshots and photographed displays. These models perform well even on low-quality images and can be deployed efficiently on modern hardware, enabling large-scale, automated text extraction from image collections.
+
+Once extracted, textual content from images behaves like any other data point: it can be indexed, searched, correlated, and used as a pivot for further investigation.
+
+#### Automatic Image Description and Semantic Analysis
+
+Beyond explicit text, images also convey **semantic information**: objects, scenes, interfaces, and contextual clues that are difficult to capture through OCR alone. Vision-language models and other multimodal AI systems can automatically generate structured textual descriptions of images, identifying:
+
+- Objects (e.g. devices, weapons, logos, UI elements)
+- Environments (e.g. office settings, server rooms, vehicles)
+- Activities (e.g. transactions, configuration steps, negotiations)
+- Visual patterns or recurring elements
+
+In AIL, [this capability](https://ail-project.org/blog/2025/09/29/v6.5.released/) is implemented as a **local-only vision analysis**, ensuring that sensitive images—such as those collected from social networks, underground forums, or incident-related screenshots—are processed without external data sharing.
+
+The resulting descriptions transform visual content into searchable and correlatable text, enabling analysts to pivot on keywords, objects, or inferred context rather than raw pixels.
+
+#### Pivoting with Image-Derived Data
+
+Image-derived data points enable pivoting scenarios that are otherwise difficult or impossible:
+
+- Linking social media accounts through shared visual elements
+- Correlating screenshots of tools or dashboards across platforms
+- Identifying repeated device identifiers or interface layouts
+- Connecting visual branding or symbols across campaigns
+
+In many cases, image-derived correlations bridge gaps between technical infrastructure, human communication, and operational behavior.
+
+#### Reducing Analyst Exposure and Cognitive Load
+
+An important operational benefit of automated image analysis is **analyst protection**. Sensitive, disturbing, or harmful images do not need to be viewed directly by investigators. Instead, analysis and correlation can be performed on extracted text and descriptions.
+
+This reduces cognitive strain, minimizes exposure to harmful content, and allows analysts to focus on investigation rather than content moderation.
+
+#### Noise, Ambiguity, and Validation
+
+Image-derived data points are not immune to noise.
+
+- OCR may misinterpret stylized or low-quality text
+- Vision models may generate incomplete or ambiguous descriptions
+- Common objects or scenes may produce high-cardinality correlations
+
+As with other uncommon data points, analyst validation remains essential. Image-derived indicators should be treated as **hypothesis generators** or **automatic classification**, whose value increases when reinforced by other signals such as filenames, metadata, hosting context, or temporal patterns.
+
+#### Positioning Image Analysis Among Uncommon Data Points
+
+Image-derived text and semantics represent a shift in how analysts interact with visual data. Rather than relying solely on manual inspection, images become structured inputs to correlation engines and pivoting workflows.
+
+Their strength lies not in precision, but in coverage: they surface relationships that would otherwise remain hidden because they exist only visually. When combined with other uncommon data points, image analysis extends the investigative surface beyond traditional text-based intelligence and reinforces a central theme of this book: valuable signals often reside in formats that were never designed to be analyzed at scale.
+
 ## Validating Correlation: Signal or Noise?
 
 Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
