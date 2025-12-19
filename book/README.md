@@ -7,6 +7,7 @@ keywords: [threat intelligence, cti, techniques, art of pivoting]
 titlepage: true
 logo-width: "80mm"
 footnotes-pretty: true
+footer-left: "[https://github.com/adulau/the-art-of-pivoting](https://github.com/adulau/the-art-of-pivoting)"
 toc-own-page: true
 colorlinks: true
 mainfont: NotoSans
@@ -39,6 +40,70 @@ This section therefore acts as a lightweight theory chapter — just enough stru
 In this book, we use the term **data points** to describe any discrete element that can support correlation or pivoting during threat intelligence analysis. A data point may be a traditional indicator such as an IP address, domain, or file hash, observables at large but it can also include less conventional digital artifacts like cookie names, QR codes, favicon hashes, HTTP header sequences (HHHash), DOM structure, or Marketing Analytics tracking codes. Treating all of these elements uniformly as data points is useful because it avoids assuming that only strong or traditional indicators are relevant. Even weak or unexpected data points can become valuable when combined through composite correlation. In practice, pivoting is the act of moving from one data point to another through inferred or observed relationships, while correlation is the process of identifying those relationships. 
 
 This terminology provides a neutral and flexible way to reason about diverse signals extracted from tooling (such as AIL and MISP) during infrastructure and threat actor analysis.
+
+#### Data Points in MISP: Attributes and Actionability
+
+In the MISP standard data model[^misp-standard], what this book calls a *data point* is represented as an **[attribute](https://www.misp-standard.org/rfc/misp-standard-core.html#section-2.3)**.
+
+An attribute in MISP is a typed value (e.g. domain, IP address, filename, hash, cookie name) that may serve different purposes depending on context. Crucially, MISP attributes include an **actionable flag**, commonly referred to as the **IDS flag**.
+
+- When the IDS flag is **not set**, the attribute is informational or contextual.  It may support correlation, enrichment, analyst reasoning, or historical analysis.
+- When the IDS flag **is set**, the attribute is considered suitable for detection or prevention and can be exported to intrusion detection systems, firewalls, or security controls.
+
+In practice, this means that the *same data point* can evolve over time: a contextual attribute may later become actionable once its relevance, reliability, or detection logic is established.
+
+This distinction allows MISP to support both **analysis** and **operations** without forcing analysts to prematurely label every data point as an Indicator of Compromise (IoC).
+
+#### Indicators and IoCs: A Subset of Data Points
+
+In many security contexts, the term **Indicator of Compromise (IoC)** is used to describe data that can be used directly for detection or response. Within the conceptual model of this book:
+
+> An IoC is a **data point that has become actionable**.
+
+In MISP terms, this typically corresponds to an attribute with the IDS flag enabled. Not all data points are IoCs, but many IoCs originate as ordinary data points before being validated, contextualized, and operationalized.
+
+#### Data Points in STIX: Indicators and Observables
+
+In the [STIX standard](https://docs.oasis-open.org/cti/stix/v2.1/errata01/stix-v2.1-errata01.html), the terminology differs, but the underlying concept is similar.
+
+- **STIX Indicator** objects represent actionable detection logic and therefore align closely with the concept of an IoC.
+- Many elements that would be represented as MISP attributes *without* the IDS flag are modeled in STIX as **observed data**, **observables**, or supporting objects rather than indicators.
+
+As a result, what MISP treats as a single concept (an attribute with optional actionability) is split across multiple object types in STIX, depending on intended use. This difference reflects design philosophy rather than analytical disagreement.
+
+#### Why This Distinction Matters for Pivoting
+
+For pivot-based analysis, it is important not to conflate *existence* with *actionability*.
+
+- Treating every data point as an IoC leads to noise, false positives, and fragile detection.
+- Treating data points as neutral building blocks enables broader correlation, exploration, and hypothesis generation.
+
+By using **data point** as the primary conceptual unit, this book emphasizes that pivoting starts with observation and relationship discovery—not detection. Actionability is an outcome of analysis, not a prerequisite.
+
+This perspective allows analysts to incorporate unconventional, weak, or contextual elements into their investigations while still supporting a clear path toward operationalization when appropriate.
+
+#### Selectors: A Term from the Intelligence Community
+
+In the intelligence community (IC), the term **selector** has a specific and well-established meaning. A selector is a **data point used to identify, filter, task, or retrieve information** related to a target, entity, or activity. Selectors are not intelligence in themselves; rather, they are *handles* that allow analysts and systems to access relevant data streams.
+
+In practice, the term *selector* emphasizes **operational use** rather than analytical interpretation. A selector is something you can act upon: query, monitor, task against, or pivot from.
+
+Selectors are often informally categorized based on their **specificity and reliability**:
+
+- **Strong selectors** uniquely and consistently identify a single entity or activity. They tend to have low false-positive rates and high confidence.
+  - Examples: cryptographic file hashes, unique account identifiers, specific email addresses.
+- **Soft selectors** are less specific and may refer to multiple entities or contexts. They are more prone to noise but are often easier to collect and more flexible for discovery.
+  - Examples: common usernames, IP addresses from shared hosting, generic filenames, language patterns.
+
+This distinction mirrors the weak-versus-strong data point concept discussed throughout this book. Strong selectors are useful for confirmation and precise tracking, while soft selectors excel at **exploration, clustering, and hypothesis generation**.
+
+In pivot-based analysis, selectors function as **entry points into a graph of relationships**. A single selector may lead to multiple related data points, which then become selectors themselves in subsequent pivots.
+
+Importantly, selectors do not need to be strong to be useful. Many of the uncommon data points described in this book—such as cookie names, DOM structure hashes, favicon hashes, or image-derived text—can be understood as *soft selectors*. Their value lies not in uniqueness, but in their ability to reveal connections when combined with other signals.
+
+For the purposes of this book, **selectors can be viewed as a subset of data points with an explicitly operational role**. All selectors are data points, but not all data points are selectors until they are used to drive collection, correlation, or pivoting.
+
+This distinction helps bridge intelligence-community terminology with threat intelligence practice: whether one speaks of selectors, indicators, observables, or data points, the underlying challenge remains the same—determining which elements are actionable, how reliable they are, and how they can be combined to uncover meaningful relationships.
 
 ### Correlation
 
@@ -899,6 +964,16 @@ This book began life as a presentation at the [2025 FIRST Cyber Threat Intellige
 
 While the presentation’s narrative was time-limited, the ambition of this book is broader. It preserves the pragmatic, analyst-oriented tone of the original session yet adds depth, case studies, workflows, and open-source tooling (such as MISP and the AIL Project) to support repeatable investigation. Above all, it remains an open, living document—rooted in the same community-driven ethos that brought the Berlin event together.
 
+### Acknowledgements
+
+This work would not have been possible without the continuous support and intellectual curiosity of [the entire CIRCL team](https://www.circl.lu/team/). Their openness to experimentation, constant questioning of assumptions, and encouragement to explore unconventional ideas have been instrumental in the discovery and validation of many of the data points described in this book.
+
+I would like to extend special thanks to **Aurélien Thirion** for his continuous dedication to identifying and exploring uncommon data points. His curiosity and persistence have repeatedly challenged conventional thinking and helped surface indicators that might otherwise have remained unnoticed.
+
+I am also grateful to the **[MISP project team](https://misp-project.org/)**, whose work consistently pushes us to better structure, model, and reason about intelligence. Their insistence on clarity, traceability, and interoperability has strongly influenced how correlation and pivoting are approached throughout this book.
+
+Finally, I would like to thank the broader Cyber Threat Intelligence community—especially those contributing to open-source projects—and the Intelligence Community at large for bringing forward complex, real-world problems that continue to inspire new analytical approaches.
+
 ## License
 
 *The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships* (c) Alexandre Dulaunoy
@@ -907,6 +982,7 @@ While the presentation’s narrative was time-limited, the ambition of this book
 
 You should have received a copy of the license along with this work. If not, see [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).
 
+[^misp-standard]: MISP published standards are described [https://www.misp-standard.org/standards/](https://www.misp-standard.org/standards/).
 [^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
 [^hhhash]: [HTTP Headers Hashing (HHHash) or improving correlation of crawled content](https://www.foo.be/2023/07/HTTP-Headers-Hashing_HHHash) which facilitates the hashing of similar returned HTTP headers.
