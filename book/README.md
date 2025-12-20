@@ -48,7 +48,7 @@ This terminology provides a neutral and flexible way to reason about diverse sig
 
 In the MISP standard data model[^misp-standard], what this book calls a *data point* is represented as an **[attribute](https://www.misp-standard.org/rfc/misp-standard-core.html#section-2.3)**.
 
-An attribute in MISP is a typed value (e.g. domain, IP address, filename, hash, cookie name) that may serve different purposes depending on context. Crucially, MISP attributes include an **actionable flag**, commonly referred to as the **IDS flag**.
+An attribute in MISP is a typed value (e.g. domain, IP address, filename, hash, cookie name) that may serve different purposes depending on context. Crucially, MISP attributes include an **actionable flag**, commonly referred to as the **IDS flag**[^history-ids-flag].
 
 - When the IDS flag is **not set**, the attribute is informational or contextual.  It may support correlation, enrichment, analyst reasoning, or historical analysis.
 - When the IDS flag **is set**, the attribute is considered suitable for detection or prevention and can be exported to intrusion detection systems, firewalls, or security controls.
@@ -1155,8 +1155,8 @@ Finally, I would like to thank the broader Cyber Threat Intelligence community�
 
 You should have received a copy of the license along with this work. If not, see [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).
 
+[^history-ids-flag]: In MISP, the term *IDS flag* is historical. It originates from the platform’s early focus on selecting data points suitable for network-based intrusion detection systems (IDS). The name was retained for practical and backward-compatibility reasons. Today, the flag should be understood more broadly: it indicates whether a data point is considered **automatable and suitable for detection or prevention workflows**. When the flag is not set, the data point is treated as **contextual or analytical information only**, rather than as an actionable detection element.
 [^six-degrees]: The “Six Degrees of Separation” concept is best understood as an empirical observation rather than a proven universal rule. Its limitations and methodological issues are discussed in depth in [Kleinfeld’s critique of the small-world hypothesis](https://web.archive.org/web/20160423162512/http://www.stat.cmu.edu/~fienberg/Stat36-835/Kleinfeld_SWP.pdf), which highlights how anecdotal interpretations and sampling bias can overstate the universality of short path lengths in real-world networks.
-
 [^versioned]: This book is versioned in a Git repository, and the date refers to the current version. As the book is a living document, it evolves through new contributions and updates whenever new insights, techniques, or noteworthy topics related to pivoting, data points, or correlation are discovered or refined.
 [^warning-list]: [MISP Warning Lists](https://github.com/MISP/misp-warninglists) are used to inform MISP users—and tools relying on the same standards—about data points that may generate false positives or require additional contextual awareness during analysis.
 [^misp-standard]: MISP published standards are described [https://www.misp-standard.org/standards/](https://www.misp-standard.org/standards/).
