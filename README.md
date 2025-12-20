@@ -1,8 +1,10 @@
-# the-art-of-pivoting
+# The Art of Pivoting
 
-The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
+Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
 
 - [PDF](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.pdf)
+
+![Poétique de la ligne, exposition de Fabienne Verdier au Domaine de Chaumont-sur-Loire, 2025](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/book/img/verdier.jpg)
 
 ## Abstract
 
