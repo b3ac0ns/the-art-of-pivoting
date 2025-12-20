@@ -10,6 +10,7 @@ footnotes-pretty: true
 footer-left: "[https://github.com/adulau/the-art-of-pivoting](https://github.com/adulau/the-art-of-pivoting)"
 toc-own-page: true
 colorlinks: true
+titlepage-logo: "img/verdier.jpg"
 mainfont: NotoSans
 mainfontfallback:
   - "NotoColorEmoji:mode=harf"
@@ -1121,6 +1122,20 @@ Ultimately, effective pivoting depends not on the quantity of correlations, but 
 This book began life as a presentation at the [2025 FIRST Cyber Threat Intelligence Conference](https://www.first.org/conference/firstcti25/program#pThe-Art-of-Pivoting-How-You-Can-Discover-More-from-Adversaries-with-Existing-Inf) held in Berlin (April 21-23, 2025). From the plenary stage, the theme “The Art of Pivoting” resonated with analysts, threat-intelligence practitioners, and incident-response teams alike: how to discover more from adversaries using existing information. Inspired by the lively exchange of ideas and the collaborative spirit of the conference, the authors decided to expand the talk into a full-length guide.
 
 While the presentation’s narrative was time-limited, the ambition of this book is broader. It preserves the pragmatic, analyst-oriented tone of the original session yet adds depth, case studies, workflows, and open-source tooling (such as MISP and the AIL Project) to support repeatable investigation. Above all, it remains an open, living document—rooted in the same community-driven ethos that brought the Berlin event together.
+
+### Cover Image
+
+![Poétique de la ligne, exposition de Fabienne Verdier au Domaine de Chaumont-sur-Loire, 2025](./img/verdier.jpg)
+
+Fabienne Verdier (born 1962) is a French painter who works in France after years of studies in China. She was the first non-Chinese woman to be awarded a post-graduate diploma in fine arts by the Sichuan Fine Arts Institute in Chongqing, China.
+
+The [photography was taken by Alexandre Dulaunoy](https://www.flickr.com/photos/adulau/54709855465) at *Poétique de la ligne, exposition de Fabienne Verdier au Domaine de Chaumont-sur-Loire, 2025*.
+
+I chose an image from **Fabienne Verdier**’s *Poétique de la ligne* because it visually echoes the essence of pivoting. Her work is not about representing objects, but about tracing lines that connect forces, movements, and spaces that would otherwise remain separate. A single line can bridge different scales, different energies, and different worlds.
+
+This is precisely what pivoting aims to do in intelligence analysis: to trace meaningful lines between data points that appear unrelated at first glance, and to move across technical, human, and contextual domains. Just as Verdier’s line is both deliberate and exploratory, pivoting is an act of disciplined intuition—following a connection far enough to see whether it reveals structure, meaning, or truth.
+
+The image serves as a reminder that analysis is not only about accumulation, but about connection: the art of drawing lines where others see fragments.
 
 ### Acknowledgements
 
