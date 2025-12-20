@@ -350,6 +350,8 @@ HTML content is an abundant but often underutilized source of correlation in thr
 
 This observation led to the development of the **dom-hash** algorithm.
 
+![Screenshot from the AIL framework showing the correlation of multiple Tor onion addresses using dom-hash.](./img/dom-hash.png)
+
 #### Core Idea
 
 The central idea behind dom-hash is to treat the **Document Object Model (DOM) structure** of an HTML page as a fingerprint. Instead of hashing text, scripts, or resources—which are frequently modified or localized—dom-hash focuses exclusively on the **sequence of HTML tag names** present in the document.
