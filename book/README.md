@@ -301,6 +301,8 @@ There is an additional twist: when threat actors deliberately attempt to manipul
 
 The continued use of seemingly weak data points, like MurmurHash3 (MMH3) for favicons or even simple MD5[^collision-md5] file hashes, is justified when they are understood as correlation point rather than definitive attribution artifacts. The key is to integrate them strategically with strong data points within a structured pivoting workflow.
 
+![Illustration of mixed pivoting that combines strong correlations, such as SSH key fingerprints linking clear-web and Tor addresses, with weaker data points like favicon reuse. The view is taken from the AIL framework.](./img/ail-ssh-deanonimized.png)
+
 Weak data points are often the initial starting point for an investigation (e.g., A single alone MD5 hash from a security alert). They excel at quickly casting a wide net to find clusters of potentially related infrastructure or activity. Their low interest in threat intelligence practice and tendency for adversaries to ignore them make them ideal for the initial discovery phase.
 
 > :brain: If you design a Threat Intelligence database or storage model, be sure to include a schema that accommodates a diverse array of data points, including those categorized as weak data points (e.g., MMH3, MD5, cookie names). A robust model must treat all data points as correlatable objects, ensuring that initial investigations can effectively use high-volume, low-cost signals for breadth pivoting before confirming connections with high-fidelity, strong data points.
@@ -492,6 +494,8 @@ When used as part of a broader pivoting strategy—combined with structural, tem
 Graphically encoded information—such as QR codes, barcodes, and similar visual symbologies—is increasingly present in threat actor ecosystems. Once limited to logistics and retail, these encodings now appear regularly across social networks, Tor hidden services, phishing pages, scam portals, and even ransomware negotiation sites. Their growing adoption makes them an important and often overlooked source of correlation.
 
 Unlike traditional indicators, these data points are not expressed as text or network artifacts. They are embedded visually within images, screenshots, banners, or scanned documents. As a result, they are frequently ignored by automated collection pipelines and underestimated by analysts—precisely the conditions that make them valuable for pivoting.
+
+![Illustration of how a barcode reused across social network chat messages can be correlated using the AIL framework.](./img/barcode-cashout-correlation.png)
 
 #### Why Graphically Encoded Data Matters
 
@@ -867,6 +871,77 @@ As with other uncommon data points, analyst validation remains essential. Image-
 Image-derived text and semantics represent a shift in how analysts interact with visual data. Rather than relying solely on manual inspection, images become structured inputs to correlation engines and pivoting workflows.
 
 Their strength lies not in precision, but in coverage: they surface relationships that would otherwise remain hidden because they exist only visually. When combined with other uncommon data points, image analysis extends the investigative surface beyond traditional text-based intelligence and reinforces a central theme of this book: valuable signals often reside in formats that were never designed to be analyzed at scale.
+
+### Analytics Tracking Identifiers: Google Analytics and Similar Embedded IDs
+
+Third-party analytics and tracking identifiers—such as Google Analytics (GA) tracking IDs and similar statistics or telemetry identifiers—are often overlooked in threat intelligence. They are typically viewed as benign, generic, or irrelevant to adversarial activity. In practice, however, these identifiers can become highly effective correlation points when used as part of composite pivoting.
+
+Many malicious websites, phishing kits, scam portals, and even ransomware-related infrastructure embed analytics code without fully considering its traceability. This creates durable links across deployments that otherwise appear fragmented or intentionally isolated.
+
+![A screenshot from the AIL framework illustrating the relationship between three onion addresses through a shared embedded identifier along with additional weak data points.](./img/gtracker-2.png)
+
+#### Why Analytics Tracking IDs Matter
+
+Analytics tracking identifiers have several properties that make them interesting from an investigative perspective:
+
+- They are usually configured once and reused across multiple sites
+- They persist across domain, hosting, and infrastructure changes
+- They are rarely rotated or removed during redeployment
+- They are often copied verbatim when templates or kits are reused
+
+Threat actors frequently focus on hiding network- or payload-level indicators while underestimating the intelligence value of third-party services embedded in their infrastructure. As a result, analytics IDs often survive operational changes that break more traditional indicators.
+
+#### Google Analytics IDs as Correlation Primitives
+
+Google Analytics tracking IDs (e.g., `UA-XXXXXX-X`, `G-XXXXXXXXXX`) can be extracted directly from HTML or JavaScript content. Once normalized, they function as stable, low-noise data points that can be correlated across large datasets.
+
+They are particularly effective for:
+
+- Linking phishing domains derived from the same kit
+- Correlating cloned scam or fraud websites
+- Identifying reused templates across clear web and Tor services
+- Clustering short-lived or fast-flux infrastructure
+
+While a single analytics ID does not prove attribution, repeated reuse across multiple malicious sites strongly suggests shared ownership, shared tooling, or shared operational control.
+
+#### Composite Correlation and Infrastructure Clustering
+
+Analytics tracking identifiers are most valuable when combined with other data points:
+
+- A shared GA ID combined with the same favicon hash
+- Analytics reuse reinforced by identical DOM structure (`dom-hash`)
+- GA IDs aligned with similar TLS certificates or hosting patterns
+- Analytics correlation supporting findings from HHHash or cookie name reuse
+
+In composite correlation, analytics IDs often act as **high-confidence glue** between otherwise weak signals, enabling analysts to cluster infrastructure more reliably.
+
+#### Noise, False Positives, and Interpretation
+
+Not all analytics IDs are meaningful.
+
+- Some identifiers may belong to shared services, resellers, or compromised accounts
+- Legitimate tracking IDs may appear on benign sites and later on malicious clones
+- Free or trial analytics accounts may be reused opportunistically
+
+High-cardinality analytics correlations should therefore be treated with caution. As with other uncommon data points, analyst validation is essential. Context, timing, and supporting indicators determine whether an analytics ID represents meaningful operational reuse or incidental overlap.
+
+#### Beyond Google Analytics
+
+Google Analytics is only one example of a broader class of **embedded telemetry identifiers**, which may include:
+
+- Alternative analytics platforms
+- Advertising or tracking pixels
+- Marketing or affiliate identifiers
+- Custom statistics endpoints
+
+These identifiers share similar properties: they are embedded deep in application templates, rarely scrutinized by adversaries, and persist across deployments.
+
+#### Positioning Analytics IDs Among Uncommon Data Points
+
+Analytics tracking identifiers exemplify how seemingly weak, third-party artifacts can become powerful intelligence signals when combined with other data points. Their value lies not in uniqueness or secrecy, but in **operational oversight and reuse**.
+
+Used thoughtfully, analytics IDs extend pivoting beyond traditional infrastructure indicators and expose relationships that attackers often assume are invisible. They reinforce a central theme of this book: intelligence advantage often comes from observing what adversaries forget to hide.
+
 
 ## Validating Correlation: Signal or Noise?
 
