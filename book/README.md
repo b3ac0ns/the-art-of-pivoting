@@ -519,6 +519,8 @@ QR codes are especially prevalent in modern threat activity. They are observed i
 - Ransomware leak sites and negotiation portals
 - Phishing pages designed for mobile users
 
+![Screenshot in AIL Framework showing the correlation of a QR code value containing a Tox address observed across multiple chat groups.](./img/qrcode.png)
+
 From an analytical perspective, a QR code is not just an image—it is a container for structured data. Once decoded, it often reveals:
 
 - URLs or deep links
