@@ -26,3 +26,7 @@ The approach presented throughout this book is intentionally built upon open-sou
 ## License
 
 The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+## DOI
+
+-  10.13140/RG.2.2.35566.68160
