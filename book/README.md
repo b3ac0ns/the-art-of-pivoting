@@ -1151,6 +1151,33 @@ This book began life as a presentation at the [2025 FIRST Cyber Threat Intellige
 
 While the presentation’s narrative was time-limited, the ambition of this book is broader. It preserves the pragmatic, analyst-oriented tone of the original session yet adds depth, case studies, workflows, and open-source tooling (such as MISP and the AIL Project) to support repeatable investigation. Above all, it remains an open, living document—rooted in the same community-driven ethos that brought the Berlin event together.
 
+### On the Value of Sharing Pivoting Techniques and the Limits of Secrecy
+
+A recurring concern when discussing pivoting techniques, correlation strategies, or unconventional data points is the idea that publishing such material could “help attackers.” This argument often assumes that attackers rely on publicly documented methods and that withholding knowledge improves security.
+
+Experience consistently shows the opposite.
+
+The techniques described in this book are not novel discoveries from the attacker’s perspective. They reflect methods that adversaries have used for years, sometimes decades, to move laterally, identify targets, and exploit weak signals in large datasets. What is often lacking is not attacker capability, but defender visibility and shared understanding.
+
+This concern is not new. Similar arguments were raised when early work on large-scale correlation, malware infrastructure analysis, and operational graphing was published. For example, discussions around attacker modeling were already present in earlier security research communities, including at SSTIC, where the practical realities of attacker behavior were openly addressed without leading to measurable harm to defensive posture[^sstic].
+
+Likewise, the broader security community has long recognized that secrecy alone does not provide protection. As Matt Blaze articulated in his analysis of mechanical locks, systems that rely on hidden mechanisms rather than robust design tend to fail once exposed and are often exposed sooner than expected [^blaze].
+
+### Why Publishing These Techniques Still Matters
+
+Threat actors already pivot—constantly. They correlate infrastructure, reuse tooling, track victims, and adapt quickly. What often lags behind is the defensive side: structured reasoning, shared methodologies, and common analytical language.
+
+Publishing pivoting techniques serves several purposes:
+
+- It raises the baseline understanding of defenders.
+- It enables peer review and correction of flawed assumptions.
+- It encourages tooling that supports transparency rather than obscurity.
+- It shifts the focus from secrecy to resilience.
+
+Rather than empowering attackers, open discussion of analytical techniques strengthens the community’s ability to detect, understand, and respond to threats.
+
+In this context, the goal of this book is not to reveal hidden practices from attackers, but to formalize practices that already exist—making them visible, discussable, and improvable by the wider defensive community.
+
 ### Cover Image
 
 ![Poétique de la ligne, exposition de Fabienne Verdier au Domaine de Chaumont-sur-Loire, 2025](./img/verdier.jpg)
@@ -1192,3 +1219,5 @@ You should have received a copy of the license along with this work. If not, see
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
 [^hhhash]: [HTTP Headers Hashing (HHHash) or improving correlation of crawled content](https://www.foo.be/2023/07/HTTP-Headers-Hashing_HHHash) which facilitates the hashing of similar returned HTTP headers.
 [^hashlookup]: **[hashlookup.io](https://hashlookup.io)** is an open service that aggregates cryptographic hashes observed across a wide range of public software distributions, package repositories, and datasets. It enables analysts to quickly identify hashes that are commonly associated with benign files or shared components, helping to reduce false positives when validating large-scale hash correlations.
+[^sstic]: SSTIC 2013 [A perspective to incident response or another set of recommendations for malware authors](https://www.sstic.org/media/SSTIC2013/SSTIC-actes/conf_invit2_j3_2013/SSTIC2013-Slides-conf_invit2_j3_2013-dulaunoy.pdf)
+[^blaze]: Blaze, M. [Cryptology and Physical Security: Rights Amplification in Master-Keyed Mechanical Locks](https://www.mattblaze.org/papers/mk.pdf)
