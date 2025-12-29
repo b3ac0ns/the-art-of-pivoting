@@ -3,8 +3,9 @@
 Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
 
 - [PDF](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.pdf)
-- [HTML](https://github.com/adulau/the-art-of-pivoting/tree/main/book)
+- [HTML](https://www.foo.be/the-art-of-pivoting/)
 - [EPUB](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.epub)
+- [Markdown](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/book/README.md)
 
 ![Poétique de la ligne, exposition de Fabienne Verdier au Domaine de Chaumont-sur-Loire, 2025](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/book/img/verdier.jpg)
 
